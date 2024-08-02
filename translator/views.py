@@ -267,3 +267,24 @@ def register_user(request):
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
+
+
+
+@login_required(login_url='login')
+def save_translation(request, chat_id, is_correct):
+    chat = Chat.objects.get(id=chat_id)
+    if is_correct:
+        file_path = os.path.join(settings.MEDIA_ROOT, 'correct_translations.txt')
+        chat.is_correct = True
+        chat.correct_file_path = file_path
+    else:
+        file_path = os.path.join(settings.MEDIA_ROOT, 'incorrect_translations.txt')
+        chat.is_correct = False
+        chat.incorrect_file_path = file_path
+
+    with open(file_path, 'a', encoding='utf-8') as file:
+        file.write(f"Message: {chat.message}\nResponse: {chat.response}\n\n")
+
+    chat.save()
+    return redirect('chatbot')

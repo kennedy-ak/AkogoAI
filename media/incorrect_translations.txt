@@ -1,0 +1,6 @@
+Message: hello Good Morning
+Response: "Anɔpa"
+
+Message: hello how are you?
+Response: Error HTTP translating the message
+

@@ -1,0 +1,9 @@
+Message: i am hungry
+Response: Error URL translating the message
+
+Message: hello Good Morning
+Response: "Anɔpa"
+
+Message: i am a boy
+Response: Error HTTP translating the message
+
