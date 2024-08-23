@@ -18,4 +18,13 @@ class Chat(models.Model):
         return f"{self.user.username}: {self.message}"
     
 
+class Translation(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    source = models.TextField()
+    target = models.TextField()
+    source_lang = models.CharField(max_length=100)
+    target_lang = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    iscorrect = models.BooleanField(default=True)
+
 

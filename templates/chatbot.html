@@ -2,6 +2,11 @@
 
 {% block styles %}
 <style>
+    *{
+        padding:0;
+        margin:0;
+        box-sizing: border-box;
+    }
     body, html {
         height: 100%;
     }
@@ -49,172 +54,841 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+    } 
+
+    .record-modal{
+      width: 100vw;
+      height: 100vh;
+      position:fixed;
+      top:0;
+      right:0;
+      z-index: 3;
+      display:flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.482);
+    } 
+
+    .record-modal.hide{
+      display:none;
     }
+
+    .record-box{
+      width: 450px;
+      height:300px;
+      padding:1%;
+      border-radius: 5px;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    } 
+
+    .rec-btn{
+      width:100px;
+      height:100px;
+      border:none;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background-color: rgba(83, 181, 233, 0.984);
+    }
+
+    .rec-btn > .material-icons{
+      font-size: 25px;
+      color: white;
+    } 
+
+    .rec-btn.on{
+      background-color: red;
+    }
+
+    .rec-btn + p::before{
+      content: "Start recording";
+    }
+    .rec-btn.on + p::before{
+      content: "Recording...";
+    }
+
+    #pop-rec{
+      border:none;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      background-color: transparent;
+    }
+
+    #pop-rec > .span{
+      color:rgba(83, 181, 233, 0.984);
+    }
+
+    .loader {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: none;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+
+    .rec-btn:disabled > .loader{
+      display:inline-block;
+    }
+
+    .rec-btn:disabled > .material-icons{
+      display:none;
+    }
+
+    .rec-btn:disabled + p::before{
+      content: "Mɛɛ fioo...";
+      /* change to hold on in ga */
+    }
+
+    html{
+        width:100%;
+        height:100%;
+    }
+
+
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width:100%;
+    position:relative;
+    height:100%;
+    background-color: #f4f4f4;
+}
+
+
+.main{
+    width:100%;
+    height:100%;
+    background-color: white;
+    display: flex;
+    padding-top:80px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container {
+    width: 70%;
+    margin:0;
+    background: #fff;
+    padding: 20px;
+    /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
+    border-radius: 8px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position:fixed;
+    top: 0;
+    right:0;
+    width:100%;
+    border-bottom: 1px solid #d9d9d9;
+    z-index: 2;
+    align-items: center;
+    background: white;
+    padding:1%;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: #4285F4;
+}
+
+.user-profile {
+    width: 35px;
+    height: 35px;
+    background-color: #4285F4;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-left:auto;
+}
+
+.tools {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.tool-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4285F4;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.translation-area {
+    margin-top: 20px;
+}
+
+.language-selection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.language-selection select, #swap-languages {
+    width: 30%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#swap-languages {
+    font-size: 18px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+.translation-boxes {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    position:relative;
+}
+
+#source-text, #translated-text {
+    width: 48%;
+    height: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#translated-text {
+    background-color: #f0f0f0;
+}
+
+.translation-details {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.translation-details a {
+    color: #4285F4;
+    text-decoration: none;
+}
+
+.translation-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    position:absolute;
+    bottom: 10px;
+    right: 4px; 
+}
+
+.translation-actions.l{
+    left:4px ; 
+    right:unset;
+    bottom:10px;
+}
+
+.action-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.bottom-controls {
+    display: flex;
+    justify-content: space-around;
+}
+
+.bottom-controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4285F4;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 45%;
+}
+
+.bottom-controls button:hover {
+    background-color: #357ae8;
+}
+
+.history{
+    width:30%;
+    border-left: 1px solid #d9d9d9;
+    display: flex;
+    height:100%;
+    cursor: pointer;
+    flex-direction: column;
+}
+
+.history .actions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+
+.history .actions > button{
+    background-color: transparent;
+    border:none;
+    padding:0;
+    margin: 0 4px;
+    outline:none;
+    font-size: 0.9rem;
+    color:#d9d9d9;
+}
+
+.history .actions > button.slt{
+    color:#357ae8
+}
+
+.history-list{
+    height:100%;
+    overflow-y: auto;
+}
+
+
+.history-item{
+    display:"flex";
+    flex-direction: column;
+    padding:10px;
+    border-bottom: 1px solid #d9d9d9 ;
+}
+
+
+.history-item > .tp{
+    margin-bottom: 10px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.history-item .tflow{
+    font-size: 0.85rem;
+    color:black;
+}
+.history-item > .txt{
+    font-size:0.8rem;
+    font-weight: 400;
+    margin:2px 0;
+    color:rgb(95,99,104);
+}
+
+.history-item > .src{
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.h-hd{
+    width:100%;
+    padding:2%;
+    font-size: 2rem;
+    border-bottom: 1px solid #d9d9d9;
+    font-weight: 500;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 600px) {
+
+  .translation-actions.l{
+    left:4px ; 
+    right:unset;
+    top:100px;
+}
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+
+    .tools {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tool-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .translation-boxes {
+        flex-direction: column;
+    }
+
+    #source-text, #translated-text {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .translation-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bottom-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bottom-controls button {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+}
+
+#logout{
+    margin:0 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    color:black;
+}
+
+
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="chat-container">
-  <div class="card flex-grow-1">
-    <div class="card-header bg-primary text-white">Chat </div>
-    {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"> <b>Welcome {{ user.username }}</b><a style="color:yellow" href="{% url 'logout' %}">logout </a> </div>
-    {% else %}
-    <div class="card-header bg-primary text-white"><a style="color:yellow" href="{% url 'login' %}">Login </a> <a style="color:yellow" href="{% url 'register' %}">Register </a></div>
-    {% endif %}
-    <div class="card-body messages-box">
-      <ul class="list-unstyled messages-list">
-        {% for chat in chats %}
-        {% if chat.user == request.user %}
-        <li class="message sent">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>You</b>
-            </div>
-            <div class="message-content">
-              {{ chat.message }}
-            </div>
-          </div>
-        </li>
-        <li class="message received">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>AI Translation Chatbot</b>
-            </div>
-            <div class="message-content">
-              {{ chat.response }}
-            </div>
-            <a href="{% url 'save_translation' chat.id 1 %}" class="btn btn-success">Correct</a>
-            <a href="{% url 'save_translation' chat.id 0 %}" class="btn btn-danger">Incorrect</a>
-            <button class="btn btn-primary btn-play" data-text="{{ chat.response }}">Play</button>
-          </div>
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-    <br><br><br><br><br><br>
+{% csrf_token %}
+
+<div class="record-modal hide">
+  <div class="record-box">
+    <button class="rec-btn" id="rec-btn">
+      <div class="material-icons">mic</div>
+      <span class="loader"></span>
+    </button>
+
+    <p></p>
   </div>
+</div>
+<div class="main">
 
-  <form class="message-form" method="post" action="{% url 'text_to_speech' %}">
-    {% csrf_token %}
-    <div class="input-group">
-      <input type="text" name="text" class="form-control message-input" placeholder="Type your message...">
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-primary btn-send">Send</button>
-      </div>
-    </div>
-</form>
+    <header>
+        <div class="menu-icon">&#9776;</div>
+        <div class="logo">
+            <h1>AkogoTranslate</h1>
+        </div>
+        <div class="user-profile">
+            <span>{{ user.username|slice:"0:1"}}</span>
+        </div>
 
-  <!-- <form class="message-form" method="post">
-    {% csrf_token %}
-    <div class="input-group">
-      <input type="text" name="message" class="form-control message-input" placeholder="Type your message...">
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-primary btn-send">Send</button>
-      </div>
+        <a id="logout" href="/logout" class="material-icons">logout</a>
+    </header>
+
+<!-- trnaslate container -->
+    <div class="container">
+
+   
+        <div class="translation-area">
+            <div class="language-selection">
+                <select id="source-language">
+                    <option>Ga</option>
+                    
+                </select>
+                <button id="swap-languages">⇄</button>
+                <select id="target-language">
+                    <option>Twi</option>
+                    
+                </select>
+            </div>
+            <div class="translation-boxes">
+                <textarea id="source-text" placeholder="Enter text"></textarea>
+               
+                <textarea id="translated-text" placeholder="Translation" ></textarea>
+                <div class="translation-actions">
+                    <div class="action-icons ">
+                        <button id="play-btn" class="action-btn">🔊</button>
+                    </div>
+              
+                </div>
+                <div class="translation-actions l">
+                    <div class="action-icons">
+                        <button id="pop-rec" class="action-btn">🎙️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="trans-btns"  class="bottom-controls">
+            <button id="trans-to">Translate ➡️</button>
+            <button id="trans-from"> ⬅️ Translate</button>
+        </div>
     </div>
-  </form> -->
+
+
+    <div class="history">
+        <p class="h-hd">
+            History
+        </p>
+
+        <div id="history-list" class="history-list">
+            {% for chat in history %}
+            <div
+            data-id="{{chat.id}}"
+            data-target ="{{chat.target_lang}}"
+             class="history-item">
+
+                <div class="tp">
+
+                    <span class="tflow">{{chat.source_lang}} → {{chat.target_lang}}</span>
+
+                    <div class="actions">
+                        <button
+                         class="material-icons {% if not chat.iscorrect%} slt {% endif%}" >thumb_down</button>
+                    </div>
+                </div>
+                
+                <p class="txt targ">
+                    {{chat.target}}
+                </p>
+                <p class="txt src">
+                    {{chat.source}}
+                </p>
+
+            </div>
+        
+            {% endfor %}
+
+   
+
+
+        </div>
+    </div>
+
+
 </div>
 
+
+<!-- history control -->
+
+
 <script>
-const messageList = document.querySelector('.messages-list');
-const messageForm = document.querySelector('.message-form');
-const messageInput = document.querySelector('.message-input');
+       let target = document.getElementById("translated-text")
+       let source = document.getElementById("source-text")
 
-messageForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+    const history_list = document.getElementById("history-list")
 
-    const message = messageInput.value.trim();
-    if (message.length === 0) {
-        return;
-    }
+    history_list.addEventListener("click" , async function(e){
+        
+        let elem = e.target.closest(".history-item")
 
-    const messageItem = document.createElement('li');
-    messageItem.classList.add('message', 'sent');
-    messageItem.innerHTML = `
-    <div class="message-text">
-        <div class="message-sender">
-            <b>You</b>
-        </div>
-        <div class="message-content">
-            ${message}
-        </div>
-    </div>`;
-    messageList.appendChild(messageItem);
-    messageInput.value = '';
+        if(!elem) return
 
-    fetch('', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-            'message': message
-        })
+        if(e.target.closest("button")){
+
+
+            try{
+
+                let data = new FormData()
+
+
+                let isFalse = e.target.closest("button").classList.contains("slt") ? "true" : "false"
+
+                data.append("isfalse" , isFalse)
+
+                data.append("id" , elem.dataset.id)
+
+                data.append('csrfmiddlewaretoken' , document.querySelector('[name=csrfmiddlewaretoken]').value) 
+
+                let request = await fetch("/feedback" , {
+
+                    method : "POST" , 
+                    body : data
+                })
+
+                if(request.status != 200) throw `HTTP ERROR ${request.status}`
+
+                let response = await request.json()
+
+                if(response.status == "success"){
+
+                    e.target.closest("button").classList.toggle("slt")
+                }
+
+
+
+            }
+            catch(e){
+
+                console.log(e)
+                alert("A network error occured")
+            }
+
+
+
+
+
+        }else {
+
+
+            
+            if(elem.dataset.target == "twi"){
+
+            target.value = elem.querySelector(".txt.targ").innerHTML.trim()
+            source.value = elem.querySelector(".txt.src").innerHTML.trim()
+
+            }else{
+            target.value = elem.querySelector(".txt.src").innerHTML.trim()
+            source.value = elem.querySelector(".txt.targ").innerHTML.trim()
+            }
+
+            
+        }
+
+  
+
+
+
     })
-    .then(response => response.json())
-    .then(data => {
-        const response = data.response;
-        const audioUrl = data.audio_url;
-        const responseItem = document.createElement('li');
-        responseItem.classList.add('message', 'received');
-        responseItem.innerHTML = `
-        <div class="message-text">
-            <div class="message-sender">
-                <b>AI Translation Chatbot</b>
-            </div>
-            <div class="message-content">
-                ${response}
-            </div>
-             <a href="/save_translation/${chatId}/1/" class="btn btn-success">Correct</a>
-            <a href="/save_translation/${chatId}/0/" class="btn btn-danger">Incorrect</a>
-            <button class="btn btn-primary btn-play" data-url="{% url "text_to_speech"%}">Play</button>
-        </div>`;
-        messageList.appendChild(responseItem);
-
-    })
-    .catch(error => console.error('Error:', error));
-});
 </script>
-
-<script>
-  document.querySelector(".chat-container").addEventListener("click" , async function(e){
-
-    const btn = e.target.closest(".btn-play");
-    if(!btn) return 
-
-    const data = new FormData();
-
-    data.append("text" , btn.dataset.text)
+ <!-- handling audio -->
 
 
-    try{
 
-      const request = await fetch("tts/" , {
-      method : "POST",
-      body : data
+ <script>
+
+   let outputInput = null
+
+  const transBtns = document.getElementById("trans-btns");
+
+  transBtns.addEventListener("click" , async function(e){
+
+    if(!e.target.closest("button")) return 
+
+    let data = new FormData()
+
+    data.append('csrfmiddlewaretoken' , document.querySelector('[name=csrfmiddlewaretoken]').value) 
+
+    let tar_lang = ""
+    let src_lang = ""
+    
+    if(e.target.closest("#trans-to")){
+
+
+      data.append("text" , source.value)
+      data.append("to" , "tw")
+      outputInput = target
+      tar_lang = "twi"
+      src_lang = "ga"
+
+      
+    }else {
+
+      data.append("text" , target.value)
+      data.append("to" , "ga")
+      tar_lang = "ga"
+      src_lang = "twi"
+
+      outputInput = source
+    }
+
+
+    let request = await fetch("/translate/" , {
+      body: data , 
+      method : "POST" 
     })
 
-    if(request.status !== 200) throw "HTTP ERROR"
-
-
-    let response = await request.json()
-
-    console.log(response)
-
-    const audio = new Audio(response.audio_url);
-    audio.play();
-
-
-
-    }
-
-    catch(e){
-      console.log(e)
-    }
-
+    let response = await request.json();
 
     
+
+    outputInput.value = response.text
+
+
+    let helem = `
+           <div
+            data-id="${response.id}"
+            data-target ="${tar_lang}"
+             class="history-item">
+
+                <div class="tp">
+
+                    <span class="tflow">${src_lang}→ ${tar_lang}</span>
+
+                    <div class="actions">
+                        <button
+                         class="material-icons" >thumb_down</button>
+                    </div>
+                </div>
+                
+                <p class="txt targ">
+                    ${ response.text}
+                </p>
+                <p class="txt src">
+                   ${ tar_lang =="twi" ? source.value : target.value}
+                </p>
+
+            </div>
+      `
+
+    history_list.insertAdjacentHTML("afterbegin" , helem)
+
   })
-  </script>
+ </script>
+<script>
+
+   // Handle the play button
+   document.getElementById('play-btn').addEventListener('click', async function (e) {
+   
+    if(!target.value) return 
+      try {
+          let request  = await fetch(`/tts/?text=${target.value}`);
+
+          if(request.status != 200) throw `HTTP REQUEST ${request.status}`
+
+          let response = await request.json()
+          const audio = new Audio(response.audio_url);
+
+          audio.play();
+      } catch (e) {
+          console.error('Error:', e);
+      }
+  });
+
+  recBtn = document.getElementById("rec-btn")
+  const popRec = document.getElementById("pop-rec")
+  const recModal = document.querySelector(".record-modal")
+
+  recModal.onclick = function(e){
+
+    if(!e.target.closest(".record-box")) recModal.classList.add("hide")
+  }
+  popRec.onclick = function(){
+    recModal.classList.toggle("hide")
+  }
+
+  if (navigator.mediaDevices) {
+  console.log("getUserMedia supported.");
+
+  const constraints = { audio: true };
+  let chunks = [];
+
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then((stream) => {
+      const mediaRecorder = new MediaRecorder(stream);
+
+      recBtn.onclick = () => {
+
+        if(recBtn.classList.contains("on")){
+          recBtn.classList.remove("on")
+          mediaRecorder.stop();
+
+
+        }else {
+
+          recBtn.classList.toggle("on")
+
+          mediaRecorder.start();
+       
+
+        }
+     
+      
+      };
+
+      let audioBlob = null;
+
+
+      
+      mediaRecorder.onstop = async (e) => {
+  
+        audioBlob = new Blob(chunks, { type: "audio/wav" });
+
+        chunks = [];
+
+        console.log("recorder stopped");
+
+        try{
+          recBtn.disabled = true 
+          const audioFile = new File([audioBlob], "audioFile.wav", { type: audioBlob.type });
+          
+          console.log(audioFile)
+          let data = new FormData();
+
+          data.append("audio", audioFile);
+          data.append('csrfmiddlewaretoken' , document.querySelector('[name=csrfmiddlewaretoken]').value) 
+
+          let request = await fetch("stt/" , {
+            method :"POST" , 
+            body : data
+          })
+
+          if(request.status != 200) throw `HTTP REQUEST ${request.status}`
+
+          let response = await request.json()
+
+          console.log(response)
+
+          document.getElementById("source-text").value = response.text
+          recModal.classList.add("hide")
+
+        }
+
+        catch(e){
+          recBtn.disabled = false;
+          console.error('Error:', e);
+        }
+
+        recBtn.disabled = false;
+
+      };
+
+
+      mediaRecorder.ondataavailable = (e) => {
+        chunks.push(e.data);
+      };
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    });
+}
+
+</script>
 {% endblock %}

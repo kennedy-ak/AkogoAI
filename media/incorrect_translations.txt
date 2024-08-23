@@ -4,3 +4,12 @@ Response: "Anɔpa"
 Message: hello how are you?
 Response: Error HTTP translating the message
 
+Message: wo ho te sɛn
+Response: "\" Bɔ ni oyɔɔ \""
+
+Message: Ha wo̳kase Ga
+Response: Error URL translating the message
+
+Message: dɛ woyɛɔ dɛn
+Response: abɛ ngo wɔ wo tiri so.
+

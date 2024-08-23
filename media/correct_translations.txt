@@ -7,3 +7,9 @@ Response: "Anɔpa"
 Message: i am a boy
 Response: Error HTTP translating the message
 
+Message: ninisiane
+Response: na monkyea me
+
+Message: Ha wo̳kase Ga
+Response: Ma minsua Ga
+
